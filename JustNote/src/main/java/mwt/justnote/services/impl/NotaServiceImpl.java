@@ -272,9 +272,21 @@ public class NotaServiceImpl implements NotaService {
             st.setString(1, nota.getTitolo());
             st.setString(2, nota.getContenuto());
             st.setString(3, nota.getColore());
-            st.setLong(4, nota.getUtente().getId());
-            st.setLong(5, nota.getCategoria().getId());
-            st.setLong(6, nota.getArea().getId());
+            if(nota.getUtente() != null) {
+                st.setLong(4, nota.getUtente().getId());
+            } else {
+                st.setLong(4, 0);
+            }
+            if(nota.getCategoria() != null) {
+                st.setLong(5, nota.getCategoria().getId());
+            } else {
+                st.setLong(5, 0);
+            }
+            if(nota.getArea() != null) {
+                st.setLong(6, nota.getArea().getId());
+            } else {
+                st.setLong(6, 0);
+            }
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

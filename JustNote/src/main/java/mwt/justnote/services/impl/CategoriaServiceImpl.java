@@ -177,13 +177,21 @@ public class CategoriaServiceImpl implements CategoriaService {
             connection.setAutoCommit(false);
             st = connection.prepareStatement(INSERT_CATEGORIA);
             st.setString(1, categoria.getNome());
-            st.setLong(2, categoria.getUtente().getId());
-            st.setLong(3, categoria.getArea().getId());
+            if(categoria.getUtente() != null) {
+                st.setLong(2, categoria.getUtente().getId());
+            } else {
+                st.setLong(2, 0);
+            }
+            if(categoria.getArea() != null) {
+                st.setLong(3, categoria.getArea().getId());
+            } else {
+                st.setLong(3, 0);
+            }
             st.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new JustNoteBusinessException("Something was wrong with Insert an Attraction..");
+            throw new JustNoteBusinessException("Something was wrong with Insert a Categoria..");
         } finally {
             if (connection != null) {
                 try {
