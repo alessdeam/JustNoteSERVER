@@ -1,9 +1,6 @@
 package mwt.justnote.services.impl;
 
-import mwt.justnote.model.Categoria;
-import mwt.justnote.model.Nota;
-import mwt.justnote.model.NotaCondivisa;
-import mwt.justnote.model.Utente;
+import mwt.justnote.model.*;
 import mwt.justnote.services.CategoriaService;
 import mwt.justnote.services.JustNoteBusinessException;
 import mwt.justnote.services.NotaService;
@@ -24,10 +21,13 @@ public class NotaServiceImpl implements NotaService {
     private static final String FIND_NOTE_BY_ID_UTENTE = "SELECT * FROM note WHERE id_utente=?";
     private static final String FIND_NOTE_BY_ID_AREA = "SELECT * FROM note WHERE id_area=?";
     private static final String FIND_NOTE_CONDIVISE_BY_ID_UTENTE = "SELECT * FROM note_condivise WHERE id_utente=?";
+    private static final String FIND_NOTE_CONDIVISE_BY_ID_NOTA_PARENT = "SELECT * FROM note_condivise WHERE id_nota_parent=?";
     private static final String FIND_NOTE_BY_ID_UTENTE_AND_BY_ID_CATEGORIA = "SELECT * FROM note WHERE id_utente=? AND id_categoria=?";
     private static final String INSERT_NOTA = "INSERT INTO note (titolo, contenuto, colore, id_utente, id_categoria, id_area) VALUES (?,?,?,?,?,?)";
-    private static final String UPDATE_NOTA = "UPDATE note SET titolo=?, contenuto=?, colore=?, id_utente=?, id_categoria=? WHERE id=?";
+    private static final String UPDATE_NOTA = "UPDATE note SET titolo=?, contenuto=?, colore=?, id_categoria=? WHERE id=?";
+    private static final String UPDATE_NOTA_CONDIVISA = "UPDATE note_condivise SET titolo=?, contenuto=?, colore=?, id_categoria=? WHERE id=?";
     private static final String DELETE_NOTA = "DELETE FROM note WHERE id=?";
+    private static final String DELETE_NOTA_CONDIVISA = "DELETE FROM note_condivise WHERE id=?";
     private static final String INSERT_NOTA_CONDIVISA = "INSERT INTO note_condivise (titolo, contenuto, colore, id_utente, id_categoria, id_nota_parent, permesso_modifica, permesso_condivisione, permesso_cancellazione) VALUES (?,?,?,?,?,?,?,?,?)";
 
     private CategoriaService categoriaService = new CategoriaServiceImpl();
@@ -123,7 +123,7 @@ public class NotaServiceImpl implements NotaService {
 
                 Nota nota = new Nota();
                 Categoria categoria = new Categoria();
-                Utente utente = new Utente();
+                Area area = new Area();
 
                 nota.setId(rs.getLong("id"));
                 nota.setTitolo(rs.getString("titolo"));
@@ -131,8 +131,8 @@ public class NotaServiceImpl implements NotaService {
                 nota.setColore(rs.getString("colore"));
                 categoria.setId(rs.getLong("id_categoria"));
                 nota.setCategoria(categoria);
-                utente.setId(rs.getLong("id_utente"));
-                nota.setUtente(utente);
+                area.setId(rs.getLong("id_area"));
+                nota.setArea(area);
 
                 note.add(nota);
             }
@@ -188,6 +188,56 @@ public class NotaServiceImpl implements NotaService {
                 notaCondivisa.setPermessoModifica(rs.getBoolean("permesso_modifica"));
                 notaCondivisa.setPermessoCondivisione(rs.getBoolean("permesso_condivisione"));
                 notaCondivisa.setPermessoCancellazione(rs.getBoolean("permesso_cancellazione"));
+
+                noteCondivise.add(notaCondivisa);
+            }
+            rs.close();
+
+            return noteCondivise;
+        } catch (SQLException e) {
+            return noteCondivise;
+        } finally {
+            if (sql != null) {
+                try {
+                    sql.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<NotaCondivisa> getNoteCondiviseByIdNotaParent(Long idNotaParent) {
+
+        PreparedStatement sql = null;
+        Connection connection = null;
+        List<NotaCondivisa> noteCondivise = new ArrayList<NotaCondivisa>();
+
+        try {
+
+            connection = this.getConnection(connection);
+            connection.setAutoCommit(false);
+
+            sql = connection.prepareStatement(FIND_NOTE_CONDIVISE_BY_ID_NOTA_PARENT);
+
+            sql.setLong(1, idNotaParent);
+
+            ResultSet rs = sql.executeQuery();
+
+            while(rs.next()) {
+
+                NotaCondivisa notaCondivisa = new NotaCondivisa();
+                Categoria categoria = new Categoria();
+                Utente utente = new Utente();
+
+                notaCondivisa.setId(rs.getLong("id"));
+                notaCondivisa.setTitolo(rs.getString("titolo"));
+                notaCondivisa.setContenuto(rs.getString("contenuto"));
+                notaCondivisa.setColore(rs.getString("colore"));
+                categoria.setId(rs.getLong("id_categoria"));
+                notaCondivisa.setCategoria(categoria);
+                utente.setId(rs.getLong("id_utente"));
+                notaCondivisa.setUtente(utente);
 
                 noteCondivise.add(notaCondivisa);
             }
@@ -324,12 +374,17 @@ public class NotaServiceImpl implements NotaService {
                 ps.setString(1, nota.getTitolo());
                 ps.setString(2, nota.getContenuto());
                 ps.setString(3, nota.getColore());
-                ps.setLong(4, nota.getUtente().getId());
-                ps.setLong(5, nota.getCategoria().getId());
-                ps.setLong(6, notaId);
+                ps.setLong(4, nota.getCategoria().getId());
+                ps.setLong(5, notaId);
 
-                if(ps.executeUpdate() == 1) {
-                    //System.out.println("Nota updated");
+
+            if(ps.executeUpdate() == 1) {
+                List<NotaCondivisa> noteCondivise = getNoteCondiviseByIdNotaParent(notaId);
+                if(noteCondivise.size() != 0) {
+                    for (NotaCondivisa notaCondivisa: noteCondivise) {
+                        updateNotaCondivisa(nota, notaCondivisa.getId());
+                    }
+                }
                 }else {
                     //System.out.println("Nota not updated");
                 }
@@ -358,7 +413,54 @@ public class NotaServiceImpl implements NotaService {
     }
 
     @Override
-    public Boolean deleteNota(int idNota) throws JustNoteBusinessException {
+    public void updateNotaCondivisa(Nota nota, Long notaCondivisaId) throws JustNoteBusinessException {
+
+        PreparedStatement ps = null;
+        Connection connection = null;
+
+        try {
+            connection = this.getConnection(connection);
+            connection.setAutoCommit(false);
+
+            ps = connection.prepareStatement(UPDATE_NOTA_CONDIVISA);
+
+            ps.setString(1, nota.getTitolo());
+            ps.setString(2, nota.getContenuto());
+            ps.setString(3, nota.getColore());
+            ps.setLong(4, nota.getCategoria().getId());
+            ps.setLong(5, notaCondivisaId);
+
+            if(ps.executeUpdate() == 1) {
+                //System.out.println("Nota updated");
+            }else {
+                //System.out.println("Nota not updated");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new JustNoteBusinessException("Something was wrong with Update an Nota..");
+        }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public Boolean deleteNota(long idNota) throws JustNoteBusinessException {
         PreparedStatement ps = null;
         Connection connection = null;
 
@@ -372,6 +474,57 @@ public class NotaServiceImpl implements NotaService {
             ps = connection.prepareStatement(DELETE_NOTA);
 
             ps.setLong(1, idNota);
+
+            if(ps.executeUpdate() == 1) {
+                response = true;
+
+                List<NotaCondivisa> noteCondivise = getNoteCondiviseByIdNotaParent(idNota);
+                if(noteCondivise.size() != 0) {
+                    for (NotaCondivisa notaCondivisa: noteCondivise) {
+                        deleteNotaCondivisa(notaCondivisa.getId());
+                    }
+                }
+            }else {
+                response = false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new JustNoteBusinessException("Something was wrong with Deleting an Attraction..");
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public Boolean deleteNotaCondivisa(long idNotaCondivisa) throws JustNoteBusinessException {
+        PreparedStatement ps = null;
+        Connection connection = null;
+
+        Boolean response = false;
+
+        try {
+
+            connection = this.getConnection(connection);
+            connection.setAutoCommit(false);
+
+            ps = connection.prepareStatement(DELETE_NOTA_CONDIVISA);
+
+            ps.setLong(1, idNotaCondivisa);
 
             if(ps.executeUpdate() == 1) {
                 response = true;

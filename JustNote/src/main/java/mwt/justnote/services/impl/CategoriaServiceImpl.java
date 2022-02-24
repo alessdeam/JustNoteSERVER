@@ -1,5 +1,6 @@
 package mwt.justnote.services.impl;
 
+import mwt.justnote.model.Area;
 import mwt.justnote.model.Categoria;
 import mwt.justnote.model.Nota;
 import mwt.justnote.model.Utente;
@@ -105,10 +106,13 @@ public class CategoriaServiceImpl implements CategoriaService {
 
             while(rs.next()) {
 
+                Area area = new Area();
                 Categoria categoria = new Categoria();
 
                 categoria.setId(rs.getLong("id"));
                 categoria.setNome(rs.getString("nome"));
+                area.setId(rs.getLong("id_area"));
+                categoria.setArea(area);
 
                 categorie.add(categoria);
             }

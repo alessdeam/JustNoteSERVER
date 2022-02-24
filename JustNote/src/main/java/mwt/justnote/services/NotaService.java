@@ -16,13 +16,19 @@ public interface NotaService {
 
     public List<NotaCondivisa> getNoteCondiviseByIdUtente(Long idUtente) throws JustNoteBusinessException;
 
+    public List<NotaCondivisa> getNoteCondiviseByIdNotaParent(Long idNotaParent) throws JustNoteBusinessException;
+
     public List<Nota> getNoteByIdUtenteAndIdCategoria(Long idUtente, Long idCategoria) throws JustNoteBusinessException;
 
     public void insertNota(Nota nota) throws JustNoteBusinessException;
 
     public void updateNota(Nota nota, Long notaId) throws JustNoteBusinessException;
 
-    public Boolean deleteNota(int idNota) throws JustNoteBusinessException;
+    public void updateNotaCondivisa(Nota nota, Long notaCondivisaId) throws JustNoteBusinessException;
+
+    public Boolean deleteNota(long idNota) throws JustNoteBusinessException;
+
+    public Boolean deleteNotaCondivisa(long idNotaCondivisa) throws JustNoteBusinessException;
 
     public void condividiNota(NotaCondivisa notaCondivisa, String email) throws JustNoteBusinessException;
 

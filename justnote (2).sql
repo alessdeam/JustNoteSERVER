@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Creato il: Feb 21, 2022 alle 23:34
+-- Creato il: Feb 24, 2022 alle 08:53
 -- Versione del server: 5.7.36
 -- Versione PHP: 7.4.26
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `aree` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(300) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `aree`
@@ -40,8 +40,9 @@ CREATE TABLE IF NOT EXISTS `aree` (
 
 INSERT INTO `aree` (`id`, `nome`) VALUES
 (1, 'Area prova'),
-(2, 'Area prova'),
-(3, 'Area di prrova');
+(9, 'Area di prova'),
+(4, 'Prova area'),
+(5, 'h5rhr');
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,17 @@ CREATE TABLE IF NOT EXISTS `aree_utenti` (
 INSERT INTO `aree_utenti` (`id_utente`, `id_area`) VALUES
 (1, 2),
 (1, 3),
-(2, 3);
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 6),
+(1, 6),
+(2, 7),
+(1, 7),
+(2, 8),
+(1, 8),
+(1, 9),
+(2, 9);
 
 -- --------------------------------------------------------
 
@@ -81,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `categorie` (
   PRIMARY KEY (`id`),
   KEY `id_utente` (`id_utente`),
   KEY `id_area` (`id_area`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `categorie`
@@ -92,9 +103,11 @@ INSERT INTO `categorie` (`id`, `nome`, `id_utente`, `id_area`) VALUES
 (3, 'Studio', 1, 0),
 (4, 'Appunti', 1, 0),
 (5, 'Lavoro', 1, 0),
-(7, 'Svago', 1, 0),
-(8, 'JustPlay', 1, 0),
-(10, 'Alessandro', 1, 3);
+(27, 'sfsfsre', 0, 9),
+(25, 'tshtrhr', 0, 2),
+(19, 'efefefe', 0, 3),
+(18, 'wdwdw', 0, 3),
+(30, 'shrthsr', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -115,19 +128,16 @@ CREATE TABLE IF NOT EXISTS `note` (
   KEY `id_categoria` (`id_categoria`),
   KEY `id_utente` (`id_utente`),
   KEY `id_area` (`id_area`)
-) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `note`
 --
 
 INSERT INTO `note` (`id`, `titolo`, `contenuto`, `colore`, `id_utente`, `id_categoria`, `id_area`) VALUES
-(55, 'Nota area', 'Questa è una nota area nuova', 'Coral', 1, 2, 0),
-(18, 'Conad 10/11', 'Carote, pane, salame, prosciutto', 'LightGreen', 1, 2, 0),
-(29, 'Prova teams', 'angular', 'PaleTurquoise', 1, 9, 0),
-(17, 'Appunti', '6 x 3 = 18', 'LightGreen', 1, 3, 0),
-(56, 'Nuova nota AREAAA', 'AAA', 'Coral', 1, 2, 3),
-(57, 'dwdqdwa', 'dewfeswf', 'LightYellow', 1, 4, 3);
+(95, 'rhreh', 'erherh', 'Coral', 2, 30, 0),
+(96, 'shth', 'hgsehstht', 'LightGreen', 0, 27, 9),
+(94, 'whw', 'rsrhrshtre', 'LightGreen', 2, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -151,25 +161,7 @@ CREATE TABLE IF NOT EXISTS `note_condivise` (
   KEY `id_nota_parent` (`id_nota_parent`),
   KEY `id_categoria` (`id_categoria`),
   KEY `id_utente` (`id_utente`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `note_condivise`
---
-
-INSERT INTO `note_condivise` (`id_nota_parent`, `permesso_modifica`, `permesso_condivisione`, `permesso_cancellazione`, `id`, `titolo`, `contenuto`, `colore`, `id_utente`, `id_categoria`) VALUES
-(1, 1, 0, 1, 1, 'Spesa', 'Carote', 'green', 0, 1),
-(1, 1, 0, 1, 2, 'Spesa', 'Carote', 'green', 0, 1),
-(1, 1, 0, 1, 3, 'Spesa', 'Carote', 'green', 0, 1),
-(19, 0, 0, 0, 4, 'Progetto n.2', 'Implementare register', 'Violet', 0, 5),
-(19, 0, 0, 0, 5, 'Progetto n.2', 'Implementare register', 'Violet', 0, 5),
-(18, 0, 0, 0, 6, 'Conad 10/11', 'Carote, pane, salame, prosciutto', 'LightGreen', 0, 2),
-(17, 0, 0, 0, 7, 'Appunti', '6 x 3 = 18', 'LightGreen', 0, 3),
-(17, 0, 0, 0, 8, 'Appunti', '6 x 3 = 18', 'LightGreen', 0, 3),
-(17, 0, 0, 0, 9, 'Appunti', '6 x 3 = 18', 'LightGreen', 0, 3),
-(29, 1, 0, 0, 13, 'Prova teams', 'angular', 'PaleTurquoise', 2, 9),
-(18, 1, 0, 0, 11, 'Conad 10/11', 'Carote, pane, salame, prosciutto', 'LightGreen', 2, 2),
-(19, 0, 0, 1, 12, 'Progetto n.2', 'Implementare register', 'Violet', 2, 5);
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -184,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   `id_utente` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_utente` (`id_utente`)
-) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=117 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `sessions`
@@ -255,7 +247,58 @@ INSERT INTO `sessions` (`id`, `token`, `id_utente`) VALUES
 (62, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuZHJvIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
 (63, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuZHJvIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
 (64, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuZHJvIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
-(65, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuZHJvIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1);
+(65, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuZHJvIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(66, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(67, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(68, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJBbGVzc2FuZHJvIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlZGVhbWljaXM4QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiY2lhb25lIn19.', 2),
+(69, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(70, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(71, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(72, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(73, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(74, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(75, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(76, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(77, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(78, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(79, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(80, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(81, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(82, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(83, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(84, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(85, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(86, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(87, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(88, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(89, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(90, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(91, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(92, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(93, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(94, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(95, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(96, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(97, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(98, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(99, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(100, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(101, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(102, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(103, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(104, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(105, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(106, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(107, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(108, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(109, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(110, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(111, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(112, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(113, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(114, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2),
+(115, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjEsIm5vbWUiOiJBbGVzc2FuIiwiY29nbm9tZSI6IkRlIEFtaWNpcyIsImVtYWlsIjoiYWxlLmRlLmFtaWNpc0Bob3RtYWlsLml0IiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 1),
+(116, 'eyJhbGciOiJub25lIn0.eyJ1dGVudGUiOnsiaWQiOjIsIm5vbWUiOiJTaW1vbmUiLCJjb2dub21lIjoiQ2FydXNvIiwiZW1haWwiOiJhbGVkZWFtaWNpczhAZ21haWwuY29tIiwicGFzc3dvcmQiOiJjaWFvbmUifX0.', 2);
 
 -- --------------------------------------------------------
 
@@ -271,15 +314,24 @@ CREATE TABLE IF NOT EXISTS `utenti` (
   `email` varchar(300) NOT NULL,
   `password` varchar(300) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `utenti`
 --
 
 INSERT INTO `utenti` (`id`, `nome`, `cognome`, `email`, `password`) VALUES
-(1, 'Alessandro', 'De Amicis', 'ale.de.amicis@hotmail.it', 'bde29bf5eb0f3ab8c34680d348f9b7dfbc4aded7a1e64c162d92cf8bd49027c7'),
-(2, 'Alessandro', 'De Amicis', 'aledeamicis8@gmail.com', 'bde29bf5eb0f3ab8c34680d348f9b7dfbc4aded7a1e64c162d92cf8bd49027c7');
+(1, 'Alessan', 'De Amicis', 'ale.de.amicis@hotmail.it', 'bde29bf5eb0f3ab8c34680d348f9b7dfbc4aded7a1e64c162d92cf8bd49027c7'),
+(2, 'Simone', 'Caruso', 'aledeamicis8@gmail.com', 'bde29bf5eb0f3ab8c34680d348f9b7dfbc4aded7a1e64c162d92cf8bd49027c7'),
+(3, 'sgsrgrsg', 'sgsr', 'hthft', 'e91347915e81731107c58a37b2dce7f230467f19faa945c7ad0f45453fd36589'),
+(4, 'efeef', 'fefe', 'efef', 'd186704ffdc05865cb5b84686283672b5ebdea7dc41755e16f4c7f48f59f00e4'),
+(5, 'Alessandro', 'De Amicis', 'ale.dicis@hotmail.it', '189f40034be7a199f1fa9891668ee3ab6049f82d38c68be70f596eab2e1857b7'),
+(6, 'Alessandro', 'De Amicis', 'huob', '8254c329a92850f6d539dd376f4816ee2764517da5e0235514af433164480d7a'),
+(7, 'fwqwe', 'fdwewe', 'FRANCESCO.ALLEGRETTI@FAMECCANICA.COM', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'),
+(8, 'wdwwdw', 'wdwd', 'dwd', '56d017b3e365c86f210af0ca58f3e3268d4d0b6baa72eb201ee554e836c14f3a'),
+(9, 's', 'ss', 'ss', '043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89'),
+(10, 'sqss', 'wsw', 'sa', '130dccc993b767286f6e74c20401f0e6471d2e587899418abcb5521c87c62517'),
+(11, 'Adjwo', 'jw0jd', 'a', 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

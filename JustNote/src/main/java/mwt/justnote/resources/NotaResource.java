@@ -75,7 +75,7 @@ public class NotaResource {
     }
 
     @GET
-    @Path("/GetNoteByIdUtente/{token}/{idUtente}/{idCategoria}")
+    @Path("/GetNoteByIdUtenteAndIdCategoria/{token}/{idUtente}/{idCategoria}")
     public Response GetNoteByIdUtenteAndIdCategoria(
             @PathParam("token") String token,
             @PathParam("idUtente") Long idUtente,
